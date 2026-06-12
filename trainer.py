@@ -1,5 +1,6 @@
 # Sudoku AI Model Trainer
 import os
+import datetime
 import json
 import torch
 import torch.nn as nn
@@ -262,8 +263,10 @@ if __name__ == "__main__":
                 print(f"Early stopping triggered at epoch {epoch+1}. Best Val Loss: {best_val_loss:.4f}")
                 break
 
-    # Keep the final plot displayed after training completes
-    plt.ioff()  # Disable interactive mode
-    plt.show()
+    # Save the final training progression graph with a timestamped filename for reference
+    datetimestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
+    figure_filename = os.path.join("analysis","training_runs",os.path.basename(TARGET_TRAINING_DATASET)).replace("sudoku_puzzle_dataset_one_hot_encoded", "training_run").replace("_train.json", f"_{datetimestamp}.png")
+    plt.savefig(figure_filename)  # Save the final training progress graph
+    print(f"Final training progression graph saved as {figure_filename}")
 
     print("Training complete. Best model saved as best_sudoku_model.pth")

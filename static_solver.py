@@ -4,8 +4,8 @@ import json
 import time
 
 GENERATE_DATASET = True  # Set to True to generate a dataset of puzzles with solutions
-GEN_DATASET_SIZE = 10  # Number of puzzles to generate for the dataset
-GEN_BLANKS = 10  # Number of blanks in each generated puzzle
+GEN_DATASET_SIZE = 50000  # Number of puzzles to generate for the dataset
+GEN_BLANKS = 6  # Number of blanks in each generated puzzle
 GEN_MAX_SOLUTIONS = 1  # Maximum number of solutions allowed for each generated puzzle (1 for unique solution)
 
 # The following will be our universal test position for the solvers.

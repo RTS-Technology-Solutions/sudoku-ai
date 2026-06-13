@@ -1,11 +1,12 @@
 # Expert System for Solving Sudoku Puzzles
+import os
 import random
 import json
 import time
 
 GENERATE_DATASET = True  # Set to True to generate a dataset of puzzles with solutions
-GEN_DATASET_SIZE = 50000  # Number of puzzles to generate for the dataset
-GEN_BLANKS = 6  # Number of blanks in each generated puzzle
+GEN_DATASET_SIZE = 1000000  # Number of puzzles to generate for the dataset
+GEN_BLANKS = range(10, 41)  # Range of blanks (10 to 40 inclusive)
 GEN_MAX_SOLUTIONS = 1  # Maximum number of solutions allowed for each generated puzzle (1 for unique solution)
 
 # The following will be our universal test position for the solvers.
@@ -173,11 +174,23 @@ def validate_solution(puzzle_board, solution_board):
                 return False  # The solution violates sudoku rules
     return True
 
-def generate_puzzles_with_solution_count(num_puzzles, num_blanks, max_solutions):
-    # Generate a specific number of puzzles with a max solution count
+def generate_puzzles_with_solution_count(num_puzzles, blanks_input, max_solutions):
+    # Determine the sequence of blanks to use to ensure equal distribution
+    if isinstance(blanks_input, int):
+        blanks_sequence = [blanks_input] * num_puzzles
+    else:
+        blanks_list = list(blanks_input)
+        # Create a balanced sequence (e.g., [10, 11, 12, ... 40, 10, 11, ...])
+        blanks_sequence = (blanks_list * (num_puzzles // len(blanks_list) + 1))[:num_puzzles]
+
     generated_puzzles = []
     
     while len(generated_puzzles) < num_puzzles:
+        # Determine how many blanks for this specific puzzle from the sequence
+        num_blanks = blanks_sequence[len(generated_puzzles)]
+
+        if len(generated_puzzles) % 1000 == 0 and len(generated_puzzles) > 0:
+            print(f"Generated {len(generated_puzzles)} puzzles so far (Current blanks: {num_blanks})...")
         valid_board = generate_board()
         puzzle = generate_puzzle(valid_board, num_blanks)
         
@@ -193,23 +206,33 @@ def generate_puzzles_with_solution_count(num_puzzles, num_blanks, max_solutions)
             generated_puzzles.append({
                 "puzzle": puzzle,
                 "solution": solution,
-                "num_solutions": len(solutions_tracker)
+                "num_solutions": len(solutions_tracker),
+                "blanks": num_blanks
             })
     
     return generated_puzzles
 
 
 
-if __name__ == "__main__":
-    if GENERATE_DATASET:
+def main(generate_dataset=GENERATE_DATASET, dataset_size=GEN_DATASET_SIZE, num_blanks=GEN_BLANKS, max_solutions=GEN_MAX_SOLUTIONS):
+    if generate_dataset:
         # Create a puzzle dataset with X puzzles each having Y blanks and at most Z solution
-        print("\nGenerating puzzle dataset (this may take a while)...")
-        puzzle_dataset = generate_puzzles_with_solution_count(GEN_DATASET_SIZE, GEN_BLANKS, GEN_MAX_SOLUTIONS)
-        print(f"Generated {len(puzzle_dataset)} puzzles with 10 blanks and at most 1 solution.")
+        blanks_label = f"{num_blanks.start}-{num_blanks.stop-1}" if isinstance(num_blanks, range) else str(num_blanks)
+        print(f"\nGenerating {dataset_size} puzzle dataset with blanks range {blanks_label} (this may take a while)...")
+        
+        puzzle_dataset = generate_puzzles_with_solution_count(dataset_size, num_blanks, max_solutions)
+        print(f"Generated {len(puzzle_dataset)} puzzles.")
 
         # Export the dataset to a json file
         timestamp = int(time.time())
-        dataset_path = f"data/sudoku_puzzle_dataset_{GEN_DATASET_SIZE}_{GEN_BLANKS}_{GEN_MAX_SOLUTIONS}_{timestamp}.json"
+        # Use absolute path relative to this script to avoid folder location issues
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        export_dir = os.path.join(script_dir, "data")
+        
+        if not os.path.exists(export_dir):
+            os.makedirs(export_dir)
+            
+        dataset_path = os.path.join(export_dir, f"sudoku_puzzle_dataset_{dataset_size}_{blanks_label}_{max_solutions}_{timestamp}.json")
         with open(dataset_path, 'w') as f:
             json.dump(puzzle_dataset, f, indent=2)
         print(f"Dataset saved to {dataset_path}")
@@ -238,3 +261,6 @@ if __name__ == "__main__":
         count_solutions_copy = [row[:] for row in puzzle]
         count_solutions(count_solutions_copy, solutions_tracker)
         print(f"Number of solutions found: {len(solutions_tracker)}")
+
+if __name__ == "__main__":    
+    main()

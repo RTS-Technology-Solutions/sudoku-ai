@@ -2,12 +2,13 @@
 import os
 import random
 import json
-import time
+import datetime
 
 GENERATE_DATASET = True  # Set to True to generate a dataset of puzzles with solutions
 GEN_DATASET_SIZE = 1000000  # Number of puzzles to generate for the dataset
 GEN_BLANKS = range(10, 41)  # Range of blanks (10 to 40 inclusive)
 GEN_MAX_SOLUTIONS = 1  # Maximum number of solutions allowed for each generated puzzle (1 for unique solution)
+GEN_DATESTAMP = datetime.datetime.now().strftime("%Y%m%d%H%M") # Timestamp for dataset versioning
 
 # The following will be our universal test position for the solvers.
 test_board = [
@@ -214,7 +215,7 @@ def generate_puzzles_with_solution_count(num_puzzles, blanks_input, max_solution
 
 
 
-def main(generate_dataset=GENERATE_DATASET, dataset_size=GEN_DATASET_SIZE, num_blanks=GEN_BLANKS, max_solutions=GEN_MAX_SOLUTIONS):
+def main(generate_dataset=GENERATE_DATASET, dataset_size=GEN_DATASET_SIZE, num_blanks=GEN_BLANKS, max_solutions=GEN_MAX_SOLUTIONS, gen_datestamp=GEN_DATESTAMP):
     if generate_dataset:
         # Create a puzzle dataset with X puzzles each having Y blanks and at most Z solution
         blanks_label = f"{num_blanks.start}-{num_blanks.stop-1}" if isinstance(num_blanks, range) else str(num_blanks)
@@ -224,7 +225,6 @@ def main(generate_dataset=GENERATE_DATASET, dataset_size=GEN_DATASET_SIZE, num_b
         print(f"Generated {len(puzzle_dataset)} puzzles.")
 
         # Export the dataset to a json file
-        timestamp = int(time.time())
         # Use absolute path relative to this script to avoid folder location issues
         script_dir = os.path.dirname(os.path.abspath(__file__))
         export_dir = os.path.join(script_dir, "data")
@@ -232,7 +232,7 @@ def main(generate_dataset=GENERATE_DATASET, dataset_size=GEN_DATASET_SIZE, num_b
         if not os.path.exists(export_dir):
             os.makedirs(export_dir)
             
-        dataset_path = os.path.join(export_dir, f"sudoku_puzzle_dataset_{dataset_size}_{blanks_label}_{max_solutions}_{timestamp}.json")
+        dataset_path = os.path.join(export_dir, f"sudoku_puzzle_dataset_{dataset_size}_{blanks_label}_{max_solutions}_{gen_datestamp}.json")
         with open(dataset_path, 'w') as f:
             json.dump(puzzle_dataset, f, indent=2)
         print(f"Dataset saved to {dataset_path}")

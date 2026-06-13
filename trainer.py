@@ -204,20 +204,20 @@ def main(checkpoint_path=CHECKPOINT_PATH, target_training_dataset=TARGET_TRAININ
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
         
-        START_EPOCH = checkpoint['epoch']
-        total_epochs = START_EPOCH + training_epochs  # Continue training for the remaining epochs
+        start_epoch = checkpoint['epoch']
+        total_epochs = start_epoch + training_epochs  # Continue training for the remaining epochs
         best_val_loss = checkpoint['best_val_loss']
         train_losses = checkpoint['train_losses']
         val_losses = checkpoint['val_losses']
-        print(f"Training will resume from Epoch {START_EPOCH}. Best Val Loss so far: {best_val_loss:.4f}")
+        print(f"Training will resume from Epoch {start_epoch}. Best Val Loss so far: {best_val_loss:.4f}")
     else:
         print("No checkpoint found. Starting fresh training run.")
 
-    print(f"Initializing {"continued" if START_EPOCH > 0 else "new"} training for {training_epochs} epochs with early stopping patience of {estop_patience} epochs.")
+    print(f"Initializing {"continued" if start_epoch > 0 else "new"} training for {training_epochs} epochs with early stopping patience of {estop_patience} epochs.")
     print("\nStarting training loop...")
 
     # Training the model by iterating through the DataLoader
-    for epoch in range(START_EPOCH, total_epochs):
+    for epoch in range(start_epoch, total_epochs):
         model.train()
         running_train_loss = 0.0
 

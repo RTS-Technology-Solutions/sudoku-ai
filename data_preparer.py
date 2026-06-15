@@ -107,7 +107,7 @@ def main(test_mode=TEST_MODE, target_raw_dataset=TARGET_RAW_DATASET, perform_spl
             random.seed(42)
             random.shuffle(all_indices)
 
-            train_count = int(count * target_split_ratio)
+            train_count = int(count * target_split_ratio)  # Use the configurable ratio from parameters
             remaining = count - train_count
             val_count = remaining // 2
             test_count = remaining - val_count

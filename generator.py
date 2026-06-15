@@ -185,31 +185,40 @@ def generate_puzzles_with_solution_count(num_puzzles, blanks_input, max_solution
         blanks_sequence = (blanks_list * (num_puzzles // len(blanks_list) + 1))[:num_puzzles]
 
     generated_puzzles = []
+    max_attempts_per_puzzle = 1000  # Prevent infinite loops on difficult blank ranges
     
     while len(generated_puzzles) < num_puzzles:
         # Determine how many blanks for this specific puzzle from the sequence
         num_blanks = blanks_sequence[len(generated_puzzles)]
+        attempts = 0
+        puzzle_found = False
 
-        if len(generated_puzzles) % 1000 == 0 and len(generated_puzzles) > 0:
-            print(f"Generated {len(generated_puzzles)} puzzles so far (Current blanks: {num_blanks})...")
-        valid_board = generate_board()
-        puzzle = generate_puzzle(valid_board, num_blanks)
+        while attempts < max_attempts_per_puzzle and not puzzle_found:
+            if len(generated_puzzles) % 100 == 0 and len(generated_puzzles) > 0 and attempts == 0:
+                print(f"Generated {len(generated_puzzles)} puzzles so far (Current blanks: {num_blanks})...")
+            
+            valid_board = generate_board()
+            puzzle = generate_puzzle(valid_board, num_blanks)
+            
+            # Make a copy to avoid modifying original
+            puzzle_copy = [row[:] for row in puzzle]
+            solutions_tracker = []
+            # Use max_solutions + 1 to detect if there are too many solutions
+            count_solutions(puzzle_copy, solutions_tracker, max_solutions + 1)
+            
+            if len(solutions_tracker) <= max_solutions:
+                # Solve the puzzle to get the unique solution
+                solution = brute_force_solve(puzzle)
+                generated_puzzles.append({
+                    "puzzle": puzzle,
+                    "solution": solution
+                })
+                puzzle_found = True
+            
+            attempts += 1
         
-        # Make a copy to avoid modifying original
-        puzzle_copy = [row[:] for row in puzzle]
-        solutions_tracker = []
-        # Use max_solutions + 1 to detect if there are too many solutions
-        count_solutions(puzzle_copy, solutions_tracker, max_solutions + 1)
-        
-        if len(solutions_tracker) <= max_solutions:
-            # Solve the puzzle to get the unique solution
-            solution = brute_force_solve(puzzle)
-            generated_puzzles.append({
-                "puzzle": puzzle,
-                "solution": solution,
-                "num_solutions": len(solutions_tracker),
-                "blanks": num_blanks
-            })
+        if not puzzle_found:
+            print(f"Warning: Could not generate valid puzzle with {num_blanks} blanks after {max_attempts_per_puzzle} attempts. Skipping this configuration.")
     
     return generated_puzzles
 

@@ -1,25 +1,25 @@
 # Soduku AI Project
-*by Pat Snyder*
-*Created: 2026-06-11*
+*by Pat Snyder*  
+*Created: 2026-06-11*  
 
-This project implements a series of solvers for the game Sudoku. 
+This project implements a series of solvers for the game Sudoku.  
 
 
 ## Model Analytics Project Readme:
 
-*Breaking the Boundaries of the "Black Box"*
+*Breaking the Boundaries of the "Black Box"*  
 
 ### Overview
 
-A machine learning project designed to strip away the "magic" of neural networks by treating model weights not as a mysterious unknown, but as observable, temporal numbers with defined impacts. 
+A machine learning project designed to strip away the "magic" of neural networks by treating model weights not as a mysterious unknown, but as observable, temporal numbers with defined impacts.  
 
-Using a custom-built Sudoku solver as the canvas, this project maps internal matrix multiplications directly back to human-comprehensible concepts. By translating raw data into clear visual metaphors, we trace "the idea" that led to "the decision," mirroring the complete transparency of chess engine bitboards.
+Using a custom-built Sudoku solver as the canvas, this project maps internal matrix multiplications directly back to human-comprehensible concepts. By translating raw data into clear visual metaphors, we trace "the idea" that led to "the decision," mirroring the complete transparency of chess engine bitboards.  
 
 #### Phase 1: Architectural Coverage :green_circle: *Complete*
 - Layer 1 (The Lens Stack): Implements a Mixed Convolutional (Inception-style) Layer using 6 parallel, rule-agnostic geometric filter shapes (2 x 2, 3 x 3, 4 x 4, 2 x 6, 1 x 5, 5 x 1) with 16 variations each, yielding 96 total feature channels.
 - Layer 2 (The Synthesizer): Compresses the 96 raw perspectives down to 32 combined channels, forcing the network to synthesize micro-patterns into high-level structural concepts.
 
-#### Phase 2: Analytics & Visualizing the Machine :blue_circle: *In Progress*
+#### Phase 2: Analytics & Visualizing the Machine :yellow_circle: *In Progress*
 - Weight Auditing: Extracting raw floating-point matrices post-training to isolate and identify "dead" vs. highly weighted channels.
 - Feature Map Snaps: Exporting 9 x 9 grayscale visual snapshots of Layer 1 and Layer 2 to explicitly show what the model "sees" and "prioritizes" mid-decision.
 - The Metaphor Layer: Translating mathematical matrices into strategic narratives to bridge the gap between computer bytes and human understanding.
@@ -34,7 +34,7 @@ Using a custom-built Sudoku solver as the canvas, this project maps internal mat
 - Increase the number of blanks first to reinforce spatial learning, so that the model learns to calculate more distant relationships and patterns rather than relying on local cues.
 - Introduce puzzles with multiple solutions to encourage temporal reasoning, so that the model is able to balance out overly confident weights with the understanding that there may be multiple valid paths to a solution.
 
-#### Phase X: Parking Lot :yellow_circle: *Ideation*
+#### Phase X: Parking Lot :orange_circle: *Ideation*
 - Refine the models convolutional layer using feature selection and regression analysis techniques to pre-analyze our dataset to identify which new features to test and which could potentially be retired.
 - Of the 96 channels, identify which are most impactful and determine whether to prune the rest to encourage more efficient learning or expand the layer by replacing and adding new filter shapes to encourage more diverse perspectives.
 - Generate more difficult puzzles by eliminating biased patterns introduced during generation.

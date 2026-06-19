@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore", message=".*Using padding='same' with even kern
 # Network Architecture:
 # Model Type: Convolutional Neural Network (CNN)
 # Input Layer: Receives the 9 x 9 x 10 one-hot encoded puzzle tensor. The 10 channels represent the presence of digits 0-9 in each cell, where index 0 indicates a blank cell and indices 1-9 indicate the presence of digits 1-9.
-# Convolutional Layer 1: Uses 16 filters each of 6 unique shapes (2x2, 3x3, 4x4, 2x6, 1x5, 5x1) to scan for immediate cell relationships, 96 parallel channels.
+# Convolutional Layer 1: Uses 16 filters each of 6 unique shapes (2x2, 3x3, 4x4, 2x6, 1x5, 5x1, 1x6 parallel lines, and snake path) to scan for immediate cell relationships, 96 parallel channels.
 # Convolutional Layer 2 & 3: Scans the outputs of the previous layers to catch wider, interlocking patterns. Compresses the 96 channels down to 32 channels to cause the model to focus on the most relevant features. 
 # Output Layer: A final convolutional layer with 10 filters and a Softmax activation function to output a 9x9x10 tensor of probabilities for digits 0-9. 
 
@@ -168,6 +168,13 @@ class BlackBoxBreakerCNN(nn.Module):
         self.conv1x5 = nn.Conv2d(10, 16, kernel_size=(1, 5), padding='same')
         self.conv5x1 = nn.Conv2d(10, 16, kernel_size=(5, 1), padding='same')
 
+        # Rule specific lenses to capture actual spatial relationships (48 channels total)
+        self.conv1x9 = nn.Conv2d(10, 16, kernel_size=(1, 9), padding='same')  # Scans entire rows to capture row constraints
+        self.conv9x1 = nn.Conv2d(10, 16, kernel_size=(9, 1), padding='same')  # Scans entire columns to capture column constraints
+        
+        # Non-contiguous domain specific lens (32 channels total)
+        self.conv3x3_strided = nn.Conv2d(10, 16, kernel_size=3, stride=3, padding=0)  # Scans non-overlapping 3x3 blocks to capture box constraints
+
         # 2 Non-Contiguous Domain-Specific Lenses - 16 filters each, 32 channels (Added: 2026-06-15)
         self.parallel_lens = ParallelLineConv(10, 16)  # Scans two parallel vertical lines in a 6x6 region
         self.snake_lens = SnakePathConv(10, 16)  # Scans a custom snake-like path in a 6x4 region
@@ -176,9 +183,9 @@ class BlackBoxBreakerCNN(nn.Module):
         self.dropout = nn.Dropout2d(p=0.1)  # Randomly zero out entire channels with a probability to encourage more robust feature learning and prevent overfitting.
         
         # --- LAYER 2: THE SYNTHESIZER ---
-        # Input: 96 channels from Layer 1
+        # Input: 128 channels from Layer 1
         # Output: 32 compressed channels
-        self.layer2 = nn.Conv2d(128, 32, kernel_size=3, padding='same')
+        self.layer2 = nn.Conv2d(176, 32, kernel_size=3, padding='same')
         
         # --- FINAL LAYER: THE PREDICTOR ---
         # Input: 32 compressed channels
@@ -193,14 +200,27 @@ class BlackBoxBreakerCNN(nn.Module):
         out2x6 = F.relu(self.conv2x6(x))
         out1x5 = F.relu(self.conv1x5(x))
         out5x1 = F.relu(self.conv5x1(x))
+        
+         # 2. Run row and column global constraint lenses
+        out1x9 = F.relu(self.conv1x9(x))
+        out9x1 = F.relu(self.conv9x1(x))
+        
+        # 3. Run strided block lens & broadcast back to 9x9 space
+        # out3x3_strided_raw has spatial shape (B, 16, 3, 3)
+        out3x3_strided_raw = F.relu(self.conv3x3_strided(x))
+        # Upsample (3, 3) -> (9, 9) to broadcast block-level characteristics back to cell coordinates
+        out3x3_strided = F.interpolate(out3x3_strided_raw, size=(9, 9), mode='nearest')
+        
+        # 4. Run non-contiguous structural lenses
         out_parallel = F.relu(self.parallel_lens(x))  # Output from the parallel line lens
         out_snake = F.relu(self.snake_lens(x))  # Output from the snake path lens
         
         # 2. Glue the 96 perspectives together along the channel axis
         x1 = torch.cat([
             out2x2, out3x3, out4x4, out2x6, out1x5, out5x1, 
+            out1x9, out9x1, out3x3_strided,
             out_parallel, out_snake        
-        ], dim=1)
+        ], dim=1) # Shape: (B, 176, 9, 9) - 176 channels from all the lenses combined
         
         # Apply the dropout to the combined feature maps (Added: 2026-06-12)
         x1_regularized = self.dropout(x1)

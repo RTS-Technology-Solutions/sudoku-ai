@@ -272,9 +272,10 @@
                 <div class="slide3-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6">
                     <img src="images/slide3-lens-stack-alt.jpg" alt="Lens Stack Architecture" class="mx-auto mt-6 rounded-lg shadow-lg" />
                 </div>
-                <div class="slide3-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6"></div>
-                    <img src="images/slide3-synthesizer-predictor.jpg" alt="Synthesizer & Predictor" class="mx-auto mt-6 rounded-lg shadow-lg" />
+                <!-- <div class="slide3-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6"></div>
+                    <img src="images/slide3-model-funnel-alt.jpg" alt="Synthesizer & Predictor" class="mx-auto mt-6 rounded-lg shadow-lg" />
                 </div>
+            -->
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="card p-6">
@@ -289,7 +290,7 @@
                 <div class="card p-6">
                     <h3 class="text-xl font-semibold mb-6">Layer 2: The Cognitive Bottleneck</h3>
                     <div class="flex flex-col items-center justify-center h-full pb-8">
-                        <div class="bg-blue-600 text-white px-8 py-3 rounded-t-full w-full max-w-[200px] text-center font-bold">128 Perspectives</div>
+                        <div class="bg-blue-600 text-white px-8 py-3 rounded-t-full w-full max-w-[200px] text-center font-bold">176 Perspectives</div>
                         <div class="bg-slate-300 h-16 w-1"></div>
                         <div class="bg-orange-500 text-white px-6 py-3 rounded w-full max-w-[140px] text-center font-bold">32 High-Level Rules</div>
                         <div class="bg-slate-300 h-16 w-1"></div>
@@ -310,7 +311,7 @@
                     The model achieved 100% accuracy on standard puzzles. But when tested on sparse boards with 40-50 blanks, performance dropped. This wasn't a failure of logic, but a <strong>Decoding Trap</strong>.
                 </p>
                 <div class="slide4-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6">
-                    <img src="images/slide4-ambiguity-trap.jpg" alt="Ambiguity Trap" class="mx-auto mt-6 rounded-lg shadow-lg" />
+                    <img src="images/slide4-model-training.png" alt="Model Loss During Training" class="mx-auto mt-6 rounded-lg shadow-lg" />
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -359,7 +360,7 @@
                     I audited 5,000 "failed" boards. The results were telling: the model didn't fail the rules of Sudoku. It discovered <strong>Alternate Valid Realities</strong>.
                 </p>
                 <div class="slide5-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6"></div>
-                    <img src="images/slide5-forensic-diagnostics-alt.jpg" alt="Forensic Diagnostics" class="mx-auto mt-6 rounded-lg shadow-lg" />
+                    <img src="images/slide5-error-matrix.png" alt="Forensic Diagnostics" class="mx-auto mt-6 rounded-lg shadow-lg" />
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -416,9 +417,10 @@
                         <p class="text-xs mt-4 text-center text-blue-100 italic">Simulated Search Tree Traversal using Neural Confidence Heuristics.</p>
                     </div>
                 </div>
-                <div class="slide5-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6"></div>
+                <!-- <div class="slide5-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6"></div>
                     <img src="images/slide6-hindsight-backtracking.jpg" alt="Forensic Diagnostics" class="mx-auto mt-6 rounded-lg shadow-lg" />
                 </div>
+            -->
             </div>
         </section>
 
@@ -495,10 +497,10 @@
             data: {
                 labels: ['Layer 1 Filters'],
                 datasets: [
-                    { label: 'Standard Squares', data: [48], backgroundColor: '#2563eb' },
-                    { label: 'Long Rows/Cols', data: [48], backgroundColor: '#3b82f6' },
+                    { label: 'Custom Filter Shapes', data: [96], backgroundColor: '#2563eb' },
                     { label: 'Parallel Lenses', data: [16], backgroundColor: '#f97316' },
-                    { label: 'Snake Paths', data: [16], backgroundColor: '#10b981' }
+                    { label: 'Snake Paths', data: [16], backgroundColor: '#10b981' },
+                    { label: 'Rule Based Filters', data: [48], backgroundColor: '#14b8a6' }
                 ]
             },
             options: {
@@ -509,7 +511,7 @@
                     tooltip: tooltipConfig 
                 },
                 scales: {
-                    x: { stacked: true, max: 128 },
+                    x: { stacked: true, max: 176 },
                     y: { stacked: true }
                 }
             }

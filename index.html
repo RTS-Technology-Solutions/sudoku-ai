@@ -190,7 +190,7 @@
                         Standard computer vision relies on <strong>local locality</strong>. In a photo of a cat, pixels representing an ear are adjacent. However, in Sudoku, a single digit at (0,0) exerts a <strong>mathematical force</strong> on (0,8) across the entire board. 
                     </p>
                     <p class="text-lg text-slate-600 mb-6 leading-relaxed">
-                        To solve this, we had to break traditional convolutional boundaries. Instead of looking for textures, our model looks for <strong>non-local spatial constraints</strong>.
+                        To solve this, I had to break traditional convolutional boundaries. Instead of looking for textures, the model looks for <strong>non-local spatial constraints</strong>.
                     </p>
                 </div>
                 <div class="card p-8 flex flex-col items-center justify-center space-y-6">
@@ -231,7 +231,7 @@
             <div class="mb-8">
                 <h2 class="text-3xl font-bold mb-4">Stage 1: High-Performance Data Streaming</h2>
                 <p class="text-lg text-slate-600 max-w-3xl">
-                    Loading 1 million JSON records as standard floating-point arrays would consume 50GB of RAM. We engineered a serialized <code>uint8</code> tensor pipeline to stream data directly into the GPU.
+                    Loading 1 million JSON records as standard floating-point arrays would consume 50GB of RAM. I engineered a serialized <code>uint8</code> tensor pipeline to stream data directly into the GPU.
                 </p>
                 <div class="slide2-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6">
                     <img src="images/slide2-high-performance-streaming.jpg" alt="High Performance Streaming" class="mx-auto mt-6 rounded-lg shadow-lg" />
@@ -267,7 +267,7 @@
             <div class="mb-8">
                 <h2 class="text-3xl font-bold mb-4">Stage 2 & 3: The Architecture Stack</h2>
                 <p class="text-lg text-slate-600 max-w-3xl">
-                    Instead of standard square filters, we implemented a <strong>Mixed Inception Stack</strong>. This "Lens Stack" runs 8 distinct geometric shapes in parallel to find different types of relational logic.
+                    Instead of standard square filters, I implemented a <strong>Mixed Inception Stack</strong>. This "Lens Stack" runs numerous distinct geometric shapes in parallel to find different types of relational logic.
                 </p>
                 <div class="slide3-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6">
                     <img src="images/slide3-lens-stack.jpg" alt="Lens Stack Architecture" class="mx-auto mt-6 rounded-lg shadow-lg" />
@@ -278,12 +278,12 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-6 text-center">Layer 1: Lens Composition (128 Channels)</h3>
+                    <h3 class="text-xl font-semibold mb-6 text-center">Layer 1: Lens Composition (176 Channels)</h3>
                     <div class="chart-container">
                         <canvas id="lensChart"></canvas>
                     </div>
                     <p class="mt-4 text-sm text-slate-500">
-                        Distribution of feature extraction channels across standard squares, long strips, and custom snake-paths.
+                        Distribution of feature extraction channels across standard squares, long strips, boxes, and custom snake-paths.
                     </p>
                 </div>
                 <div class="card p-6">
@@ -307,7 +307,7 @@
             <div class="mb-8">
                 <h2 class="text-3xl font-bold mb-4">Stage 4: The Ambiguity Trap</h2>
                 <p class="text-lg text-slate-600 max-w-3xl">
-                    Our model achieved 100% accuracy on standard puzzles. But when tested on sparse boards with 40-50 blanks, performance dropped. This wasn't a failure of logic, but a <strong>Decoding Trap</strong>.
+                    The model achieved 100% accuracy on standard puzzles. But when tested on sparse boards with 40-50 blanks, performance dropped. This wasn't a failure of logic, but a <strong>Decoding Trap</strong>.
                 </p>
                 <div class="slide4-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6">
                     <img src="images/slide4-ambiguity-trap.jpg" alt="Ambiguity Trap" class="mx-auto mt-6 rounded-lg shadow-lg" />
@@ -320,7 +320,7 @@
                         <canvas id="accuracyChart"></canvas>
                     </div>
                     <p class="mt-4 text-sm text-slate-500">
-                        The "Greedy Decoding" approach fails when faced with multiple mathematically valid paths.
+                        The "Greedy Decoding" brute force approach fails when faced with multiple mathematically valid paths.
                     </p>
                 </div>
                 <div class="card p-6 bg-slate-900 text-white">
@@ -356,7 +356,7 @@
             <div class="mb-8">
                 <h2 class="text-3xl font-bold mb-4">Stage 5: Forensic Diagnostics</h2>
                 <p class="text-lg text-slate-600 max-w-3xl">
-                    We audited 5,000 "failed" boards. The results were startling: the model didn't fail the rules of Sudoku. It discovered <strong>Alternate Valid Realities</strong>.
+                    I audited 5,000 "failed" boards. The results were telling: the model didn't fail the rules of Sudoku. It discovered <strong>Alternate Valid Realities</strong>.
                 </p>
                 <div class="slide5-images col-span-1 md:col-span-2 mt-8 flex justify-center items-center gap-6"></div>
                     <img src="images/slide5-forensic-diagnostics-alt.jpg" alt="Forensic Diagnostics" class="mx-auto mt-6 rounded-lg shadow-lg" />
@@ -394,7 +394,7 @@
                     <div>
                         <h2 class="text-3xl font-bold mb-6">Future Strategy: Hindsight Backtracking</h2>
                         <p class="text-lg mb-6 opacity-90 leading-relaxed">
-                            We are wrapping our vision stack in a search engine. By using our model's confidence scores as a <strong>heuristic guide</strong>, we can explore multiple branches of possibility.
+                            I plan on wrapping the vision stack in a search engine. By using me model's confidence scores as a <strong>heuristic guide</strong>, I can explore multiple branches of possibility.
                         </p>
                         <ul class="space-y-4">
                             <li class="flex items-center space-x-3">
@@ -425,12 +425,8 @@
     </main>
 
     <footer class="bg-slate-900 text-slate-500 py-12 px-6 text-center text-sm border-t border-slate-800">
-        <p class="mb-2">&copy; 2024 RTS Deep Learning Labs. All Rights Reserved.</p>
+        <p class="mb-2">&copy; 2026 //_ RTS Labs. All Rights Reserved.</p>
         <p>Built with Tailwind CSS, Chart.js, and Plotly.js.</p>
-        <div class="mt-4 flex justify-center space-x-4">
-            <span class="px-2 py-1 bg-slate-800 rounded">No SVG Used</span>
-            <span class="px-2 py-1 bg-slate-800 rounded">No Mermaid JS Used</span>
-        </div>
     </footer>
 
     <script>

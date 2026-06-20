@@ -168,11 +168,11 @@ class BlackBoxBreakerCNN(nn.Module):
         self.conv1x5 = nn.Conv2d(10, 16, kernel_size=(1, 5), padding='same')
         self.conv5x1 = nn.Conv2d(10, 16, kernel_size=(5, 1), padding='same')
 
-        # Rule specific lenses to capture actual spatial relationships (48 channels total)
+        # Rule specific lenses to capture actual spatial relationships (32 channels total)
         self.conv1x9 = nn.Conv2d(10, 16, kernel_size=(1, 9), padding='same')  # Scans entire rows to capture row constraints
         self.conv9x1 = nn.Conv2d(10, 16, kernel_size=(9, 1), padding='same')  # Scans entire columns to capture column constraints
         
-        # Non-contiguous domain specific lens (32 channels total)
+        # Non-contiguous domain specific lens (16 channels total)
         self.conv3x3_strided = nn.Conv2d(10, 16, kernel_size=3, stride=3, padding=0)  # Scans non-overlapping 3x3 blocks to capture box constraints
 
         # 2 Non-Contiguous Domain-Specific Lenses - 16 filters each, 32 channels (Added: 2026-06-15)

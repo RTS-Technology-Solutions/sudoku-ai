@@ -1,3 +1,13 @@
+---
+project:
+  id: sudoku-ai
+  name: Sudoku AI
+  date: 2026-06-11
+  status: feature-complete
+  tags: [game, CNN, AI]
+  priority: medium
+  next_action: None
+---
 # Soduku AI Project
 *by Pat Snyder*  
 *Created: 2026-06-11*  

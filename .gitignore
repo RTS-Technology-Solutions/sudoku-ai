@@ -148,3 +148,7 @@ exhausted_datasets/*
 # Project specific
 output/
 results/
+
+
+# Reinclude the best model file
+!models/sudoku_model_best.pth
